@@ -1,0 +1,3 @@
+#!/bin/bash
+cd src
+gcc --shared -o ../bin/computehash.so -I/usr/lib/jvm/java-1.7.0-openjdk-amd64/include -s -O2 org_themassacre_minegame_Utils.c -lssl -lcrypto -fPIC
