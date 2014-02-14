@@ -11,36 +11,6 @@ import java.util.List;
 public class Utils {
     public static final String CMD_TRAIL = ";";
     public static final String ARG_TRAIL = ":";
-    
-    public static boolean isNativeAvailable = false;
-	
-	public static void loadNativeKernel() {
-	    try {
-	        System.loadLibrary("computehash");
-	        isNativeAvailable = true;
-	    } catch(Throwable e) {
-	        System.err.println("Native kernel couldn't be loaded, slowpokeous Java one will be used (" + e + ")");
-	    }
-	}
-    
-    public static native byte[] computeHashNative(byte[] data);
-    
-    public static byte[] computeHashJava(byte[] data) {
-		MessageDigest md = null;
-		try {
-			md = MessageDigest.getInstance("SHA-256");
-		} catch (NoSuchAlgorithmException e) {
-		}
-		
-		md.update(data);
-		return md.digest();
-	}
-    
-	public static byte[] computeHash(byte[] data) {
-		if(isNativeAvailable)
-		    return computeHashNative(data);
-		return computeHashJava(data);
-	}
 	
 	public static byte[] createBytes(long[] data) {
 		ByteBuffer byteBuffer = ByteBuffer.allocate(data.length * 8);        
@@ -50,7 +20,7 @@ public class Utils {
 		return byteBuffer.array();
 	}
 	
-	static long bytesToLong(byte[] bytes) {
+	public static long bytesToLong(byte[] bytes) {
 	    ByteBuffer buffer = ByteBuffer.allocate(8);
 	    buffer.put(bytes);
 	    buffer.flip(); 

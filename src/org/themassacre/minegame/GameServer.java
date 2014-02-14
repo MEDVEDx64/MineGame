@@ -16,6 +16,7 @@ public class GameServer extends Thread {
 	public static String diff = "4/4@4";
 	public static short port = 9750;
 	final static int DEFAULT_TICKS = 60;
+	public static HashFunction func = new SHA256HashFunction();
 	
 	public static String state = "Waiting";
 	static int stateTicks = 0;
@@ -40,8 +41,17 @@ public class GameServer extends Thread {
 							for(User u: users)
 								if(u.nickname.length() != 0) {
 									if(u.ready) {
-										u.sendln(Utils.formatSimpleMessage("NEAR", null));
-										u.sendln(Utils.formatSimpleMessage("RULES", diff));
+										String[][] cmd = {
+												{"NEAR"},
+												{"RULES", diff},
+												{"FUNC", func.toString()}
+										};
+										
+										ArrayList<String[]> msg = new ArrayList<String[]>();
+										for(String[] c: cmd)
+											msg.add(c);
+										
+										u.sendln(Utils.createMessage(msg));
 									}
 									else {
 										u.sendln(Utils.formatSimpleMessage("DROP", "You are NOT ready!"));
@@ -94,6 +104,7 @@ public class GameServer extends Thread {
 	public static void main(String[] args) {
 		for(String s: args) {
 			if(s.startsWith("-d")) diff = s.substring(2);
+			if(s.startsWith("-tw64")) func = new Tworojok64HashFunction();
 			try {
 				if(s.startsWith("-p")) port = Short.parseShort(s.substring(2));
 			} catch(NumberFormatException e) {
@@ -229,7 +240,9 @@ class User extends Thread {
 						try {
 							if(s[0].equals("?")) {
 								if(s[1].equals("Kernel"))
-									sendln(Utils.formatSimpleMessage("KERNEL", "WALL1"));
+									sendln(Utils.formatSimpleMessage("KERNEL", "WALL1.1.3"));
+								if(s[1].equals("Function"))
+									sendln(Utils.formatSimpleMessage("FUNC", GameServer.func.toString()));
 								else if(s[1].equals("State"))
 									sendln(Utils.formatSimpleMessage("STATE", GameServer.state));
 								else if(s[1].equals("RoundID"))
@@ -310,7 +323,7 @@ class User extends Thread {
 										byte[] userBlocks = Miner.initializeBlocks(DatatypeConverter.parseBase64Binary(this.pBlock),
 												DatatypeConverter.parseBase64Binary(this.sBlock));
 										System.arraycopy(DatatypeConverter.parseBase64Binary(s[1]), 0, userBlocks, 0, 8);
-										if(Utils.isHashAccepted(Utils.computeHash(userBlocks), rules[2])) {
+										if(Utils.isHashAccepted(GameServer.func.computeHash(userBlocks), rules[2])) {
 											sendln(Utils.formatSimpleMessage("ACCEPTED", null));
 											GameServer.broadcast(Utils.formatSimpleMessage("WINNER", nickname.split("\\x2e")[0]));
 											System.out.println("*** Winner: " + nickname.split("\\x2e")[0]);

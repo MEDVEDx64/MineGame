@@ -9,7 +9,7 @@ public class Benchmark {
 			System.exit(-1);
 		}
 		
-		Utils.loadNativeKernel();
+		HashFunction func = args.length < 3? new SHA256HashFunction(): new Tworojok64HashFunction();
 		
 		int[] rules = GameServer.parseRules(args[1]);
 		if(rules[3] > 0) {
@@ -18,7 +18,7 @@ public class Benchmark {
 		}
 		
 		MiningCrew mc = new MiningCrew(rules[2], Integer.parseInt(args[0]),
-				GameServer.generateBlock(rules[0]), GameServer.generateBlock(rules[1]));
+				GameServer.generateBlock(rules[0]), GameServer.generateBlock(rules[1]), func);
 		System.err.println("Resulting nonce is " + mc.getResult());
 
 	}

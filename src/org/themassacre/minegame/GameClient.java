@@ -65,11 +65,29 @@ public class GameClient {
 	    return false;
 	}
 	
+	static HashFunction func = new SHA256HashFunction();
+	static String currentFunc = "SHA-256";
+	static String prevFunc = "SHA-256";
+	
+	static void updateHashFunction() {
+		if(!currentFunc.equals(prevFunc)) {
+			if(currentFunc.equals("Tworojok64")) {
+				func = new Tworojok64HashFunction();
+				prevFunc = currentFunc;
+			}
+			else {
+				func = new SHA256HashFunction();
+				prevFunc = "SHA-256";
+			}
+		}
+	}
+	
 	public static void startMining(int threads) throws IOException {
 	    if(rules == null || sBlock == null || pBlock == null)
 	        System.out.println("ERROR: Can't mine because server didn't sent minimal required data set (or data need to be updated)!");
 	    else {
-	        crew = new MiningCrew(rules[2], threads, pBlock, sBlock);
+	    	updateHashFunction();
+	        crew = new MiningCrew(rules[2], threads, pBlock, sBlock, func);
 	        new Watcher().start();
 	    }
 	}
@@ -107,7 +125,7 @@ public class GameClient {
 		} catch(ArrayIndexOutOfBoundsException | NumberFormatException e) {
 		}
 		
-		Utils.loadNativeKernel();
+		SHA256HashFunction.loadNativeKernel();
 		
 		try(Socket s = new Socket(InetAddress.getByName(addr), port)) {
 			System.out.println("Connected to " + s.getInetAddress());
@@ -195,6 +213,10 @@ public class GameClient {
 						    stopMining();
 
 						}
+					    
+						else if(cmd[0].equals("FUNC")) {
+							currentFunc = cmd[1];
+						}
 						
 						else if(cmd[0].equals("DOWN")) {
 						    stopMining();
@@ -203,6 +225,15 @@ public class GameClient {
 						
 						else if(cmd[0].equals("SESSION"))
 						    System.out.println("! Your session key is " + cmd[1]);
+					    
+						else if(cmd[0].equals("REJECTED")) {
+						    if(GameServer.state.equals("Running")) {
+						    	Thread.sleep(64);
+						    	System.err.println("WARNING: get REJECTED signal, rebooting miners.");
+						    	stopMining();
+						    	startMining(threads);
+						    }
+						}
 
 					}
 				} catch(ArrayIndexOutOfBoundsException eArr) {

@@ -48,13 +48,17 @@ public class MiningCrew {
 	}
 	
 	private ArrayList<Miner> miners = null;
+	public HashFunction hashFunction;
 	
-	public MiningCrew(int diff, int threads, long[] pBlock, long[] sBlock) {
+	public MiningCrew(int diff, int threads, long[] pBlock, long[] sBlock, HashFunction func) {
 		this.diff = diff;
 		this.threads = threads;
+		this.hashFunction = func;
 		
 		Random r = new Random(System.currentTimeMillis());
 		randomOne = Utils.nextLong(r, Long.MAX_VALUE);
+		
+		System.out.println("Using " + hashFunction + " algorythm");
 		
 		miners = new ArrayList<Miner>();
 		for(int i = 0; i < threads; i++)

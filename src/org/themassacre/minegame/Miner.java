@@ -58,7 +58,7 @@ public class Miner extends Thread {
 			if(crewObj.isDone())
 				break;
 			
-			if(Utils.isHashAccepted(Utils.computeHash(Utils.createBytes(data)), crewObj.getDiff())) {
+			if(Utils.isHashAccepted(crewObj.hashFunction.computeHash(Utils.createBytes(data)), crewObj.getDiff())) {
 				mesgPrint("Accepted!");
 				crewObj.setResult(data[0]);
 				break;
