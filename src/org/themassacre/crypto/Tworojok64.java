@@ -15,6 +15,9 @@ public class Tworojok64 {
 			System.arraycopy(bytes, 0, src, 0, bytes.length);
 		}
 		
+		long[] fuse1 = { Long.parseLong("33180B0641EFF54", 16) };
+		byte[] fuse = Utils.createBytes(fuse1);
+		System.arraycopy(fuse, 0, src, src.length-8, 8);
 		long[] digest = new long[8];
 		
 		digest[0] = Long.parseLong("CFB1DF3178E75B7", 16);
