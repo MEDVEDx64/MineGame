@@ -15,29 +15,34 @@ public class Tworojok64 {
 			System.arraycopy(bytes, 0, src, 0, bytes.length);
 		}
 		
-		long[] fuse1 = { Long.parseLong("33180B0641EFF54", 16) };
+		long[] fuse1 = { 0x33180B0641EFF54L };
 		byte[] fuse = Utils.createBytes(fuse1);
 		System.arraycopy(fuse, 0, src, src.length-8, 8);
 		long[] digest = new long[8];
 		
-		digest[0] = Long.parseLong("CFB1DF3178E75B7", 16);
-		digest[1] = Long.parseLong("44EAFFD72D3AC0EC", 16);
-		digest[2] = Long.parseLong("FD6983DCB9162AA", 16);
-		digest[3] = Long.parseLong("E4ECBFB86AF98CD", 16);
-		digest[4] = Long.parseLong("91EE2C65FE4FCD6", 16);
-		digest[5] = Long.parseLong("7E40F1C98ACF42B6", 16);
-		digest[6] = Long.parseLong("D0C939D340227F4", 16);
-		digest[7] = Long.parseLong("992D9117ED55990", 16);
+		digest[0] = 0xCFB1DF3178E75B7L;
+		digest[1] = 0x44EAFFD72D3AC0ECL;
+		digest[2] = 0xFD6983DCB9162AAL;
+		digest[3] = 0xE4ECBFB86AF98CDL;
+		digest[4] = 0x91EE2C65FE4FCD6L;
+		digest[5] = 0x7E40F1C98ACF42B6L;
+		digest[6] = 0xD0C939D340227F4L;
+		digest[7] = 0x992D9117ED55990L;
 		
+		int z;
+		long current;
+		byte[] tmp = new byte[8];
 		for(int i = 0; i < bytes.length; i++) {
-			byte[] tmp = new byte[8];
 			System.arraycopy(src, i, tmp, 0, 8);
-			long current = Utils.bytesToLong(tmp);
+			current = Utils.bytesToLong(tmp);
 			
-			for(int z = 0; z < 1024; z++) {
+			for(z = 0; z < 1024; z++) {
 				
-				for(int x = 0;  x < 8; x++) {
-					digest[x] ^= (digest[(x == 0)? 7: x-1] + current);
+				digest[0] ^= (digest[7] + current);
+				digest[0] += Long.rotateRight(digest[0], i + 15);
+
+				for(int x = 1;  x < 8; x++) {
+					digest[x] ^= (digest[x-1] + current);
 					digest[x] += Long.rotateRight(digest[x], i + x + 15);
 				}
 

@@ -1,7 +1,6 @@
 package org.themassacre.crypto.test;
 
 import org.themassacre.crypto.*;
-import javax.swing.*;
 import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
