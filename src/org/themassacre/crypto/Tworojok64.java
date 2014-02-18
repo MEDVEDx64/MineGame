@@ -34,8 +34,8 @@ public class Tworojok64 {
 		byte[] tmp = new byte[8];
 		for(int i = 0; i < bytes.length; i++) {
 			System.arraycopy(src, i, tmp, 0, 8);
-			current = Utils.bytesToLong(tmp);
-			
+			current = Utils.bytesToLong(tmp) >> (4-(i&3));
+		
 			for(z = 0; z < 1024; z++) {
 				
 				digest[0] ^= (digest[7] + current);
