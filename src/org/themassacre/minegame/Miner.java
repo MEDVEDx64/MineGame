@@ -1,5 +1,7 @@
 package org.themassacre.minegame;
 
+import org.themassacre.generic.Utils;
+
 public class Miner extends Thread {
 	public static double getMHash(long speed) {
 		return getMHashCooked(getMHashRaw(speed));

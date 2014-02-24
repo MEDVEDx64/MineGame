@@ -1,4 +1,4 @@
-package org.themassacre.minegame;
+package org.themassacre.generic;
 
 import java.nio.ByteBuffer;
 import java.nio.LongBuffer;
@@ -10,6 +10,15 @@ public class Utils {
     public static final String CMD_TRAIL = ";";
     public static final String ARG_TRAIL = ":";
 	
+    public static String hexView(byte[] data) {
+    	StringBuffer buf = new StringBuffer();
+    	for(int i = 0; i < data.length; i++) {
+    		buf.ensureCapacity(buf.length() + 4);
+			buf.append(String.format("%02x", data[i]));
+    	}
+    	return new String(buf);
+    }
+    
 	public static byte[] createBytes(long[] data) {
 		ByteBuffer byteBuffer = ByteBuffer.allocate(data.length * 8);        
 		LongBuffer lBuffer = byteBuffer.asLongBuffer();

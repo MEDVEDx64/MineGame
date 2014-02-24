@@ -1,4 +1,5 @@
-package org.themassacre.minegame;
+package org.themassacre.crypto;
+
 
 public class Tworojok64HashFunction implements HashFunction {
 	public byte[] computeHash(byte[] data) {

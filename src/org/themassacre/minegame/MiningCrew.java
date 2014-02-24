@@ -2,6 +2,9 @@ package org.themassacre.minegame;
 import java.util.ArrayList;
 import java.util.Random;
 
+import org.themassacre.crypto.HashFunction;
+import org.themassacre.generic.Utils;
+
 public class MiningCrew {
 	public double MHash = 0.0f;
 	public long hashSpeed = 0;

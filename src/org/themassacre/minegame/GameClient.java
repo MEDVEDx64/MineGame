@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.ArrayList;
 import javax.xml.bind.DatatypeConverter;
 
+import org.themassacre.crypto.HashFunction;
+import org.themassacre.crypto.SHA256HashFunction;
+import org.themassacre.crypto.Tworojok64HashFunction;
+import org.themassacre.generic.Utils;
+
 class Watcher extends Thread {
     @Override public void run() {
         try {

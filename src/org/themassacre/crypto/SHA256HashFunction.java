@@ -1,7 +1,8 @@
-package org.themassacre.minegame;
+package org.themassacre.crypto;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+
 
 public class SHA256HashFunction implements HashFunction {
 	public static boolean isNativeAvailable = false;

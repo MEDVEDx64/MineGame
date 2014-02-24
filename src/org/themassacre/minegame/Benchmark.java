@@ -1,5 +1,9 @@
 package org.themassacre.minegame;
 
+import org.themassacre.crypto.HashFunction;
+import org.themassacre.crypto.SHA256HashFunction;
+import org.themassacre.crypto.Tworojok64HashFunction;
+
 public class Benchmark {
 
 	public static void main(String[] args) {

@@ -1,7 +1,7 @@
 /* medvedx64 2014 02 13 */
 
 package org.themassacre.crypto;
-import org.themassacre.minegame.Utils;
+import org.themassacre.generic.Utils;
 
 public class Tworojok64 {
 	public static byte[] computeDigest(byte[] bytes) {
