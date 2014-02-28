@@ -35,6 +35,10 @@ public class SHA256HashFunction implements HashFunction {
 		return computeHashJava(data);
 	}
 	
+	public int getDigestLength() {
+		return 256;
+	}
+	
 	public String toString() {
 		return "SHA-256";
 	}
