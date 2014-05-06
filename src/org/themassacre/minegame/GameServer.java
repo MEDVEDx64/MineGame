@@ -246,7 +246,7 @@ class User extends Thread {
 							if(s[0].equals("?")) {
 								if(s[1].equals("Kernel"))
 									sendln(Utils.formatSimpleMessage("KERNEL", "WALL1.1.3"));
-								if(s[1].equals("Function"))
+								else if(s[1].equals("Function"))
 									sendln(Utils.formatSimpleMessage("FUNC", GameServer.func.toString()));
 								else if(s[1].equals("State"))
 									sendln(Utils.formatSimpleMessage("STATE", GameServer.state));
