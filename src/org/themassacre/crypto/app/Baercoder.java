@@ -30,7 +30,6 @@ public class Baercoder {
 			System.exit(-1);
 		}
 		
-		boolean beVerbose = (args.length > 1 && args[1].equals("-v"))? true: false;
 		ByteBuffer buffer = new ByteBuffer();
 		
 		System.err.print("Loading key file");
@@ -51,12 +50,9 @@ public class Baercoder {
 		
 		System.err.print("\nComputing genesis");
 		byte[] hash = func.computeHash(buffer.toArray());
-		
-		dt.interrupt();
-		System.err.print("\nEncoding.\n");
-		
-		int lenTotal = 0;
-		int prevTotal = 0;
+
+		System.err.print("\nEncoding");
+
 		byte[] streamBuf = new byte[func.getDigestLength()];
 		while(true) {
 			int len = System.in.read(streamBuf, 0, func.getDigestLength());
@@ -65,17 +61,11 @@ public class Baercoder {
 				streamBuf[i] ^= hash[i];
 			System.out.write(streamBuf, 0, len);
 			
-			if(beVerbose) {
-				lenTotal += len;
-				if(lenTotal != prevTotal)
-					System.err.print("\r" + ((lenTotal > 1023)? (lenTotal/1024 + "K"): lenTotal) + " ");
-				prevTotal = lenTotal;
-			}
-			
 			byte[] hashNew = func.computeHash(hash);
 			hash = hashNew;
 		}
 		
+		dt.interrupt();
 		System.err.println();
 	}
 
