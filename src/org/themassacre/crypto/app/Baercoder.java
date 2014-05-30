@@ -19,7 +19,7 @@ class DotThread extends Thread {
 	}
 }
 
-public class Bärcoder {
+public class Baercoder {
 
 	static HashFunction func = new Tworojok64HashFunction();
 	static byte[] hash = new byte[func.getDigestLength()];
